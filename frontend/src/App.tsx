@@ -1,7 +1,22 @@
-function App() {
-  return(
-<h1>Olá Mundo</h1>
+import Header from "./components/Header"
+import NotificationButton from "./components/NotificationButton"
+import SalesCard from "./components/SalesCard"
+import './index.css'
 
+function App() {
+  return (
+    <>
+      <Header />
+      <main>
+        <section id="sales">
+          <div className="dsmeta-container">
+            <div>
+              <SalesCard />
+            </div>
+          </div>
+        </section>
+      </main>
+    </>
   )
 }
 
