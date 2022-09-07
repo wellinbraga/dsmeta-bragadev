@@ -2,6 +2,7 @@
     background-color: #283142 ;
     border-radius: 10px;
     padding: 30px 10px;
+    min-width: 300px;
     }    
 
 .dsmetas-sales-title {
@@ -23,6 +24,7 @@
     color: #9AAABE;
     font-size: 18px;
     padding: 0 20px;
+    
 }
 
 .dsmeta-form-control-container {
@@ -77,5 +79,36 @@
 .dsmeta-red-btn-container{
     display: flex;
     justify-content: center;
+}
 
+.show576 {
+    display: none;
+}
+
+@media (min-width: 576px){
+    .show576 {
+        display: table-cell;
+    }
+
+    .dsmeta-card {
+        padding: 35px;
+    }
+
+    .dsmeta-sales-table tr{
+        height: 55px;
+    }
+
+    .dsmeta-sales-table tbody {
+        font-size: 18px;
+    }
+}
+
+.shows992 {
+    display: none;
+}
+
+@media (min-width: 992px){
+    .shows992 {
+        display: table-cell;
+    }
 }

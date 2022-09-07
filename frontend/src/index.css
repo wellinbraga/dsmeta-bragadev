@@ -20,6 +20,7 @@ a, a:hover, a:visited {
 
 .dsmeta-container{
   width: 100%;
+  min-width: 600;
   max-width: 900px;
   margin:  0 auto;
 
