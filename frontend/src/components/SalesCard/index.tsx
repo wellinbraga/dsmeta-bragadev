@@ -4,6 +4,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import NotificationButton from "../../components/NotificationButton";
+import { BASE_URL } from "../../utils/request";
+import { Sale } from "../models/sale";
 import './styles.css';
 
 function SalesCard() {
@@ -13,12 +15,20 @@ function SalesCard() {
     const [minDate, setMinDate] = useState(min);
     const [maxDate, setMaxDate] = useState(max);
 
+    const [sales, setSales] = useState<Sale[]>([]);
+
     useEffect(() => {
-      axios.get("http://localhost:8080/sales")
-      .then (response => {
-        console.log(response.data);
-      })
-    });
+        const dmin = minDate.toISOString().slice(0,10);
+        const dmax = maxDate.toISOString().slice(0,10);
+
+        console.log(dmin);
+        console.log(dmax);
+
+        axios.get(`${BASE_URL}/sales?minDate=${dmin}&maxDate=${dmax}`)
+            .then(response => {
+                setSales(response.data.content);
+            })
+    }, [minDate, maxDate]);
 
     return (
         <div className="dsmeta-card">
@@ -27,7 +37,7 @@ function SalesCard() {
                 <div className="dsmeta-form-control-container" >
                     <DatePicker
                         selected={minDate}
-                        onChange={(date: Date) => { setMinDate(date)}}
+                        onChange={(date: Date) => { setMinDate(date) }}
                         className="dsmeta-form-control"
                         dateFormat="dd/MM/yyyy"
                     />
@@ -35,7 +45,7 @@ function SalesCard() {
                 <div className="dsmeta-form-control-container" >
                     <DatePicker
                         selected={maxDate}
-                        onChange={(date: Date) => {setMaxDate(date) }}
+                        onChange={(date: Date) => { setMaxDate(date) }}
                         className="dsmeta-form-control"
                         dateFormat="dd/MM/yyyy"
                     />
@@ -55,45 +65,24 @@ function SalesCard() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td className="shows992"> 01 </td>
-                            <td className="show576">01/01/2022</td>
-                            <td>Anakin</td>
-                            <td className="shows992">15</td>
-                            <td className="shows992">11</td>
-                            <td>$ 4200 </td>
-                            <td>
-                                <div className="dsmeta-red-btn-container">
-                                    <NotificationButton />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="shows992"> 01 </td>
-                            <td className="show576">01/01/2022</td>
-                            <td>Anakin</td>
-                            <td className="shows992">15</td>
-                            <td className="shows992">11</td>
-                            <td>$ 4200 </td>
-                            <td>
-                                <div className="dsmeta-red-btn-container">
-                                    <NotificationButton />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="shows992"> 01 </td>
-                            <td className="show576">01/01/2022</td>
-                            <td>Anakin</td>
-                            <td className="shows992">15</td>
-                            <td className="shows992">11</td>
-                            <td>$ 4200 </td>
-                            <td>
-                                <div className="dsmeta-red-btn-container">
-                                    <NotificationButton />
-                                </div>
-                            </td>
-                        </tr>
+                        {
+                            sales.map(sale => {
+                                return (
+                                    <tr key={sale.id}>
+                                        <td className="shows992"> {sale.id} </td>
+                                        <td className="show576">{new Date(sale.date).toLocaleDateString()}</td>
+                                        <td>{sale.sellerName}</td>
+                                        <td className="shows992">{sale.visited}</td>
+                                        <td className="shows992">{sale.deals}</td>
+                                        <td>R$ {sale.amount.toFixed(2)}</td>
+                                        <td>
+                                            <div className="dsmeta-red-btn-container">
+                                                <NotificationButton />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                     </tbody>
                 </table>
             </div>
